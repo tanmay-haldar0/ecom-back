@@ -23,8 +23,14 @@ class ProductCategory(models.Model):
 
 class Product(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-    titel = models.TextField()
-    price = models.FloatField()
-    sale_price = models.FloatField()
-    is_sale = models.BooleanField(default=False)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
+    title = models.TextField(max_length=100, default="Title")
+    description = models.TextField(max_length=500, default="Descriptions...")
+    price = models.FloatField(default=000.00)
+    review = models.FloatField(default=5.0)
+    sale_price = models.FloatField(default=000.00)
+    is_sale = models.BooleanField(default=False,)
+    is_customizable = models.BooleanField(default=False,)
+    category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.title
