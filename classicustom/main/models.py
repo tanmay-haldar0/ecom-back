@@ -30,7 +30,29 @@ class Product(models.Model):
     sale_price = models.FloatField(default=000.00)
     is_sale = models.BooleanField(default=False,)
     is_customizable = models.BooleanField(default=False,)
-    category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, related_name='category_product')
 
     def __str__(self):
         return self.title
+
+# Customer Model
+
+class Customer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mobile = models.PositiveBigIntegerField()
+
+    def __str__(self):
+        return self.user.username
+
+#  Order Model
+
+class Orders(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    order_time = models.DateTimeField(auto_now_add=True)
+
+class OrderItems(models.Model):
+    order = models.ForeignKey(Orders, on_delete=models.CASCADE, related_name='order_item')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.product.title
